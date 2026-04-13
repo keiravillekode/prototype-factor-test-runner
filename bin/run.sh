@@ -31,6 +31,9 @@ mkdir -p "${output_dir}"
 
 echo "${slug}: testing..."
 
+# Remove STOP-HERE lines to unskip all tests
+sed -i '/STOP-HERE/d' "${solution_dir}/${slug}/${slug}-tests.factor"
+
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it
 test_output=$(cd "${solution_dir}" && factor -e="USING: vocabs.loader tools.test tools.test.private namespaces kernel system ; \".\" add-vocab-root \"${slug}\" require \"${slug}\" test test-failures get empty? [ 0 exit ] [ 1 exit ] if" 2>&1)

@@ -18,7 +18,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /opt/factor /opt/factor
-ENV PATH="/opt/factor:${PATH}"
+ENV PATH="/opt/factor:${PATH}" \
+    XDG_CACHE_HOME=/tmp
 
 WORKDIR /opt/test-runner
 COPY . .
