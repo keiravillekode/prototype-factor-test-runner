@@ -23,6 +23,7 @@ docker run \
     --rm \
     --network none \
     --read-only \
+    --user "$(id -u):$(id -g)" \
     --mount type=bind,src="${PWD}/tests",dst=/opt/test-runner/tests \
     --mount type=tmpfs,dst=/tmp \
     --volume "${PWD}/bin/run-tests.sh:/opt/test-runner/bin/run-tests.sh" \

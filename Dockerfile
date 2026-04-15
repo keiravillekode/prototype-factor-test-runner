@@ -11,11 +11,18 @@ RUN git clone https://github.com/factor/factor.git && \
 WORKDIR /opt/factor
 RUN ./build.sh update
 
+# Remove files not needed at runtime
+RUN rm -rf .git build vm src misc Factor.app \
+    factor.image.fresh boot.*.image libfactor.a libfactor-ffi-test.so \
+    extra GNUmakefile Nmakefile LICENSE.txt README.md \
+    build.sh build.cmd unmaintained
+
 FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash jq coreutils libstdc++6 \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man \
+       /usr/share/zoneinfo /usr/share/perl5 /var/lib/dpkg /var/cache
 
 COPY --from=builder /opt/factor /opt/factor
 ENV PATH="/opt/factor:${PATH}" \
